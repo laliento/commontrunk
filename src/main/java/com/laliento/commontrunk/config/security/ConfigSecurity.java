@@ -68,13 +68,17 @@ public class ConfigSecurity extends WebSecurityConfigurerAdapter {
     .authorizeRequests()
       .antMatchers("/", "/home","/resources/**").authenticated()
     	//internos una vez autenticado
-    	.antMatchers("/css/**","/images/**", "/js/**").authenticated()
+      	.antMatchers("/css/**","/images/**", "/js/**").authenticated()
     	//publicos
     	.antMatchers("/login.xhtml","/vendor/**","/app/**", "/image/**").permitAll()
-      .antMatchers("/pages/admin/**").hasRole("ADMIN") //hasRole a�ade el prefijo _ROLE
-      .antMatchers("/pages/user/**").access("hasRole('ADMIN') OR hasRole('USER') OR hasRole('LALO')")
-      .antMatchers("/pages/lalo/**").access("hasRole('LALO')")
-      .antMatchers("/pages/lalo/**").access("isAuthenticated() and principal.username=='laliento'")
+    	//Lalo pages
+    	.antMatchers("/pages/lalo/**").access("hasRole('LALO')")
+        .antMatchers("/pages/lalo/**").access("isAuthenticated() and principal.username=='laliento'")
+        //Admin pages
+        .antMatchers("/pages/admin/**").access("hasRole('ADMIN') OR hasRole('LALO')") //hasRole a�ade el prefijo _ROLE
+        //User Pages
+    	.antMatchers("/pages/user/**").access("hasRole('ADMIN') OR hasRole('USER') OR hasRole('LALO')")
+      
       .antMatchers("/pages/**").authenticated()
       .and().formLogin()  
 	        .loginPage("/login.xhtml")
