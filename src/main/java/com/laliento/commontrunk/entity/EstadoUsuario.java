@@ -17,6 +17,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="CAT_ESTADO_USUARIO")
+@lombok.Getter
+@lombok.Setter
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
+@lombok.ToString
 public class EstadoUsuario {
 
 	@Id
@@ -28,27 +33,7 @@ public class EstadoUsuario {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "estadoUsuario")
 	private Set<Usuario> usuario = new HashSet<Usuario>(0);
 	
-	public EstadoUsuario() {
-	}
 	public EstadoUsuario(Integer idEstadoUsuario) {
 		this.idEstadoUsuario = idEstadoUsuario;
-	}
-	
-	public Integer getIdEstadoUsuario() {
-		return idEstadoUsuario;
-	}
-	public void setIdEstadoUsuario(Integer idEstadoUsuario) {
-		this.idEstadoUsuario = idEstadoUsuario;
-	}
-	public String getDescripcion() {
-		return descripcion;
-	}
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-	@Override
-	public String toString() {
-		return "EstadoUsuario [idEstadoUsuario=" + idEstadoUsuario
-				+ ", descripcion=" + descripcion + ", usuario=" + usuario + "]";
 	}
 }

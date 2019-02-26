@@ -18,9 +18,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import com.laliento.commontrunk.entity.EstadoUsuario;
-import com.laliento.commontrunk.entity.Perfil;
 import com.laliento.commontrunk.entity.Usuario;
+import com.laliento.commontrunk.repository.UsuarioRepository;
 /**
  * @author Eduardo Cruz Zamorano
  *
@@ -33,8 +32,8 @@ public class BackingBean implements Serializable{
 	protected FacesContext contextFaces = FacesContext.getCurrentInstance();
 	protected Logger log;
 	private boolean flagErrorMsg;
-//	@Autowired
-//	private UsuarioDao usuarioDao;
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 	private Usuario usuario;
 	private Authentication auth;
 	public BackingBean() {
@@ -47,8 +46,7 @@ public class BackingBean implements Serializable{
 		if(this.usuario == null){
 			auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null)
-//			return (Usuario) usuarioDao.findByUserName(auth.getName());
-			return new Usuario("laliento", "Eduardo", "C", "Z", "eduardo.cz.mac@gmail.com", "123", "456", new EstadoUsuario(1), new Perfil(1), true);
+			return usuarioRepository.findByUsername(auth.getName());
 		}else
 			return usuario;
 		
@@ -77,18 +75,21 @@ public class BackingBean implements Serializable{
 			auth = SecurityContextHolder.getContext().getAuthentication();
 		return auth;
 	}
+	@SuppressWarnings("deprecation")
 	public void closeDialog(String widgetVarDialog, boolean flagErrorMsg) {
 		if (!flagErrorMsg) {
 			contextRequest = RequestContext.getCurrentInstance();
 			contextRequest.execute(widgetVarDialog + ".hide()");
 		}
 	}
+	@SuppressWarnings("deprecation")
 	public void openDialog(String widgetVarDialog, boolean success) {
 		if (success) {
 			contextRequest = RequestContext.getCurrentInstance();
 			contextRequest.execute(widgetVarDialog + ".show()");
 		}
 	}
+	@SuppressWarnings("deprecation")
 	public void refreshComponent(String componentUpdate) {
 		contextRequest = RequestContext.getCurrentInstance();
 		contextRequest.update(componentUpdate);

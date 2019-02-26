@@ -19,6 +19,8 @@ import org.hibernate.annotations.Type;
 @Table(name="ENT_USUARIO")
 @lombok.Getter
 @lombok.Setter
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
 @lombok.ToString
 public class Usuario {
 	@Id
@@ -48,23 +50,8 @@ public class Usuario {
 	@Column(name="ENABLE",columnDefinition = "TINYINT")
 	@Type(type = "org.hibernate.type.NumericBooleanType")
 	private boolean enable;
-	public Usuario() {}
 	public Usuario(Integer idUsuario) {
 		super();
 		this.idUsuario = idUsuario;
-	}
-	public Usuario(String username, String nombre, String apellidoPaterno, String apellidoMaterno, String correo,
-			String password, String salt, EstadoUsuario estadoUsuario, Perfil perfil, boolean enable) {
-		super();
-		this.username = username;
-		this.nombre = nombre;
-		this.apellidoPaterno = apellidoPaterno;
-		this.apellidoMaterno = apellidoMaterno;
-		this.correo = correo;
-		this.password = password;
-		this.salt = salt;
-		this.estadoUsuario = estadoUsuario;
-		this.perfil = perfil;
-		this.enable = enable;
 	}
 }

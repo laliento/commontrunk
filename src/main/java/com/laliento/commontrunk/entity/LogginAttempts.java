@@ -18,6 +18,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table (name="LOGGIN_ATTEMPTS")
+@lombok.Getter
+@lombok.Setter
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
+@lombok.ToString
 public class LogginAttempts implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
@@ -33,33 +38,5 @@ public class LogginAttempts implements Serializable{
 	public LogginAttempts(Usuario usuario, Date tiempo) {
 		this.usuario = usuario;
 		this.tiempo = tiempo;
-	}
-	public LogginAttempts(Integer idLoggAtt) {
-		this.idLoggAtt = idLoggAtt;
-	}
-	public Integer getIdLoggAtt() {
-		return idLoggAtt;
-	}
-	public void setIdLoggAtt(Integer idLoggAtt) {
-		this.idLoggAtt = idLoggAtt;
-	}
-	public Usuario getUsuario() {
-		return usuario;
-	}
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-	public Date getTiempo() {
-		return tiempo;
-	}
-	public void setTiempo(Date tiempo) {
-		this.tiempo = tiempo;
-	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-	@Override
-	public String toString() {
-		return "LogginAttempts [idLoggAtt=" + idLoggAtt + ", usuario=" + usuario + ", tiempo=" + tiempo + "]";
 	}
 }

@@ -69,15 +69,15 @@
                
                <c:forEach var="menuVar" items="#{loginView.lstRelPerfilMenu}">
 	               <li>
-	                  <a href="#" title="#{menuVar.catMenu.desc}" data-toggle="collapse-next" class="fa #{menuVar.catMenu.icono}">
+	                  <a href="#" title="#{menuVar.catMenu.descripcion}" data-toggle="collapse-next" class="fa #{menuVar.catMenu.icono}">
 	                     <div class="label label-primary pull-right"> #{menuVar.catMenu.subMenus.size()} </div>
-	                     <span class="item-text">#{menuVar.catMenu.desc}</span>
+	                     <span class="item-text">#{menuVar.catMenu.descripcion}</span>
 	                  </a>
 	                  <c:forEach var="submenu" items="#{menuVar.catMenu.subMenus}">
 		                  <ul class="nav collapse ">
 		                     <li>
-		                        <a href="#{facesContext.externalContext.requestContextPath}#{submenu.url}" title="#{submenu.desc}" data-toggle="" class="no-submenu">
-		                           <em class="fa #{submenu.icono}"></em>#{submenu.desc}
+		                        <a href="#{facesContext.externalContext.requestContextPath}#{submenu.url}" title="#{submenu.descripcion}" data-toggle="" class="no-submenu">
+		                           <em class="fa #{submenu.icono}"></em>#{submenu.descripcion}
 		                        </a>
 		                     </li>
 		                  </ul>

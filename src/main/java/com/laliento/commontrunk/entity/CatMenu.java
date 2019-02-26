@@ -22,6 +22,8 @@ import javax.persistence.Table;
 @Table(name="CAT_MENU")
 @lombok.Getter
 @lombok.Setter
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
 @lombok.ToString
 public class CatMenu implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -43,7 +45,6 @@ public class CatMenu implements Serializable{
 	private String icono;
 	@OneToMany(mappedBy="menuPadre")
 	private Set<CatMenu> subMenus = new HashSet<CatMenu>();
-	public CatMenu() {}
 	public CatMenu(String descripcion, CatMenu menuPadre, String url, Integer orden,
 			String icono) {
 		super();

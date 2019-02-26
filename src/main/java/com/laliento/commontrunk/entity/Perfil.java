@@ -19,6 +19,8 @@ import javax.persistence.Table;
 @Table(name="CAT_PERFIL")
 @lombok.Getter
 @lombok.Setter
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
 @lombok.ToString
 public class Perfil {
 
@@ -31,7 +33,6 @@ public class Perfil {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "perfil")
 	private Set<Usuario> usuario = new HashSet<Usuario>(0);
 	
-	public Perfil() {}
 	public Perfil(Integer idPerfil) {
 		this.idPerfil = idPerfil;
 	}

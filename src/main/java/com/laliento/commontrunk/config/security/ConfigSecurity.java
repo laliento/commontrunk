@@ -1,6 +1,5 @@
 package com.laliento.commontrunk.config.security;
 
-import java.util.Random;
 import java.util.regex.Pattern;
 
 import javax.sql.DataSource;
@@ -54,29 +53,6 @@ public class ConfigSecurity extends WebSecurityConfigurerAdapter {
 				return StringUtilSoftMvi.getSHA512(paswdUser.toString());
 			}
 		});
-//		.passwordEncoder(
-//			new BaseDigestPasswordEncoder() {
-//				ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder(512);
-//				//cuando llega el pwdUs del suario ya viene con un primer hash512 por js
-//				@Override
-//				public boolean isPasswordValid(String pwdBd, String pwdUs, Object arg2) {
-//					shaPasswordEncoder.setEncodeHashAsBase64(false);
-//					if(pwdUs.length() != 128 || pwdBd.length() != 257)
-//						return false;
-//					String[] pswdBdAndSalt = pwdBd.split(Pattern.quote("|"));
-//					if(pswdBdAndSalt.length != 2)
-//						return false;
-//					if(pswdBdAndSalt[0].length() != 128 || pswdBdAndSalt[1].length() != 128)
-//						return false;
-//					return shaPasswordEncoder.isPasswordValid(pswdBdAndSalt[0], pwdUs,pswdBdAndSalt[1]);
-//				}
-//				@Override
-//				public String encodePassword(String paswdUser, Object salt) {
-//					shaPasswordEncoder.setEncodeHashAsBase64(false);
-//					return shaPasswordEncoder.encodePassword(paswdUser, salt);
-//				}
-//			}
-//		);
 	}
 	@Override
 	  public void configure(WebSecurity web) throws Exception {
@@ -98,7 +74,7 @@ public class ConfigSecurity extends WebSecurityConfigurerAdapter {
       .antMatchers("/pages/admin/**").hasRole("ADMIN") //hasRole a�ade el prefijo _ROLE
       .antMatchers("/pages/user/**").access("hasRole('ADMIN') OR hasRole('USER')")
       .antMatchers("/pages/lalo/**").access("hasRole('ADMIN') OR hasRole('LALO')")
-      .antMatchers("/pages/lalo/**").access("isAuthenticated() and principal.username=='admonlalo'")
+      .antMatchers("/pages/lalo/**").access("isAuthenticated() and principal.username=='laliento'")
       .antMatchers("/pages/**").authenticated()
       .and().formLogin()  
 	        .loginPage("/login.xhtml")
@@ -144,21 +120,21 @@ public class ConfigSecurity extends WebSecurityConfigurerAdapter {
         tokenRepositoryImpl.setDataSource(datasource);
         return tokenRepositoryImpl;
     }
-	public static void main(String[] args) {
-		Random r = new Random();
-		Integer low = 1000;
-		Integer high = 9000;
-		Integer result = r.nextInt(high-low) + low;
-		//contraseña ingresada por usuario
-		String pass="user@Ape";//r.nextInt(high-low) + low;
-		String saltRandom = result.toString();
-		String saltSha = StringUtilSoftMvi.getSHA512(saltRandom+ "lalum@");
-		//SHA512 que genera js cuando envia
-		String primerSha= StringUtilSoftMvi.getSHA512(pass);
-		//SHA512 de primer SHA512 con salt
-		String passBD = StringUtilSoftMvi.getSHA512(primerSha+ saltSha);
-		System.out.println("Pwd Usuario:"+pass);
-		System.out.println("Salt BD:"+saltSha);
-		System.out.println("Pswd BD:"+passBD);
-	}
+//	public static void main(String[] args) {
+//		Random r = new Random();
+//		Integer low = 1000;
+//		Integer high = 9000;
+//		Integer result = r.nextInt(high-low) + low;
+//		//contraseña ingresada por usuario
+//		String pass="123";//r.nextInt(high-low) + low;
+//		String saltRandom = result.toString();
+//		String saltSha = StringUtilSoftMvi.getSHA512(saltRandom+ "lalum@");
+//		//SHA512 que genera js cuando envia
+//		String primerSha= StringUtilSoftMvi.getSHA512(pass);
+//		//SHA512 de primer SHA512 con salt
+//		String passBD = StringUtilSoftMvi.getSHA512(primerSha+ saltSha);
+//		System.out.println("Pwd Usuario:"+pass);
+//		System.out.println("Salt BD:"+saltSha);
+//		System.out.println("Pswd BD:"+passBD);
+//	}
 }

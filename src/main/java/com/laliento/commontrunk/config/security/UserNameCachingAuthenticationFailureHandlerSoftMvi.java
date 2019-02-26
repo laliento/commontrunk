@@ -18,16 +18,21 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.laliento.commontrunk.entity.EstadoUsuario;
 import com.laliento.commontrunk.entity.LogginAttempts;
-import com.laliento.commontrunk.entity.Perfil;
+import com.laliento.commontrunk.entity.ParametroGeneral;
 import com.laliento.commontrunk.entity.Usuario;
+import com.laliento.commontrunk.repository.LogginAttemptsRepository;
+import com.laliento.commontrunk.repository.ParametroGeneralRepository;
+import com.laliento.commontrunk.repository.UsuarioRepository;
+import com.laliento.commontrunk.util.TimeUtils;
 /**
  * @author Eduardo Cruz Zamorano
  *
  */
 @Component
+@Transactional
 public class UserNameCachingAuthenticationFailureHandlerSoftMvi extends SimpleUrlAuthenticationFailureHandler {
 	/*
 	 * Variabes independientes 
@@ -38,12 +43,12 @@ public class UserNameCachingAuthenticationFailureHandlerSoftMvi extends SimpleUr
 	/*
 	 * Inject
 	 */
-//	@Autowired
-//	private UsuarioDao usuarioDao;
-//	@Autowired
-//	private LogginAttemptsDao logginAttemptsDao;
-//	@Autowired
-//	private ParametroGeneralDao parametroGeneralDao; 
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+	@Autowired
+	private LogginAttemptsRepository logginAttemptsRepository;
+	@Autowired
+	private ParametroGeneralRepository parametroGeneralRepository; 
 	public UserNameCachingAuthenticationFailureHandlerSoftMvi(){super("/login.xhtml?error=BadCredentials");}
     @Override
     public void onAuthenticationFailure(
@@ -71,15 +76,14 @@ public class UserNameCachingAuthenticationFailureHandlerSoftMvi extends SimpleUr
     private String evitaFuerzaBruta(HttpServletRequest request) {
     	String mensajeRegreso="";
     	if(obtainUsername(request) != null && StringUtils.isNotEmpty(obtainUsername(request))){
-//    		Integer minutosCuentaBloqueada = parametroGeneralDao.findByClaveReturnInteger("minutosCuentaBloqueada");
-//    		Integer intentosPermitidosLoggin = parametroGeneralDao.findByClaveReturnInteger("intentosPermitidosLoggin");
-//			Usuario usuario = usuarioDao.findByUserName(obtainUsername(request));
-    		Usuario usuario = new Usuario("laliento", "Eduardo", "C", "Z", "eduardo.cz.mac@gmail.com", "123", "456", new EstadoUsuario(1), new Perfil(1), true);
-    		Integer minutosCuentaBloqueada = 30;
-    		Integer intentosPermitidosLoggin = 5;
+			Usuario usuario = usuarioRepository.findByUsername(obtainUsername(request));
+			ParametroGeneral parametroGeneral = parametroGeneralRepository.findByClave("intentosPermitidosLoggin");
+			Integer intentosPermitidosLoggin = parametroGeneral ==null?5 : Integer.valueOf(parametroGeneral.getValor());
+			parametroGeneral = parametroGeneralRepository.findByClave("minutosCuentaBloqueada");
+			Integer minutosCuentaBloqueada = parametroGeneral ==null?30 : Integer.valueOf(parametroGeneral.getValor());
+			Date tiempoAtras = TimeUtils.calculaTiempoatras(minutosCuentaBloqueada);
 			if(usuario != null){
-//				Integer numeroDeIntentos = logginAttemptsDao.findNumeroIntentosByUserAndMinutos(usuario,minutosCuentaBloqueada);
-				Integer numeroDeIntentos = 1;
+				Integer numeroDeIntentos = logginAttemptsRepository.countLogginAttemptsByUsuarioAndTiempoBetween(usuario,tiempoAtras,new Date()).intValue();
 				if(superaNumeroIntentos(numeroDeIntentos,intentosPermitidosLoggin)){
 					mensajeRegreso = "Cuenta bloquedada temporalmente por "+minutosCuentaBloqueada+" minutos.";
 				}
@@ -99,7 +103,7 @@ public class UserNameCachingAuthenticationFailureHandlerSoftMvi extends SimpleUr
 		return mensajeRegreso;
 	}
 	private void guardaNuevoIntentoFallido(Usuario usuario) {
-//		logginAttemptsDao.saveOrUpdate(new LogginAttempts(usuario, new Date()));
+		logginAttemptsRepository.saveAndFlush(new LogginAttempts(usuario, new Date()));
 		
 	}
 	private boolean superaNumeroIntentos(Integer numeroDeIntentos,Integer intentosPermitidosLoggin) {

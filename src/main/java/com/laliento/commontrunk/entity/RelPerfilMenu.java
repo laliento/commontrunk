@@ -17,6 +17,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="REL_PERFIL_MENU")
+@lombok.Getter
+@lombok.Setter
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
+@lombok.ToString
 public class RelPerfilMenu implements Serializable{
 	private static final long serialVersionUID = 1L;
 
@@ -27,38 +32,10 @@ public class RelPerfilMenu implements Serializable{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ID_PERFIL", nullable = false)
 	private Perfil perfil;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ID_MENU", nullable = false)
 	private CatMenu  catMenu;
-	public RelPerfilMenu() {}
 	public RelPerfilMenu(Integer idRelPerfilMenu) {
 		this.idRelPerfilMenu = idRelPerfilMenu;
-	}
-	public RelPerfilMenu(Perfil perfil, CatMenu catMenu) {
-		this.perfil = perfil;
-		this.catMenu = catMenu;
-	}
-	public Integer getIdRelPerfilMenu() {
-		return idRelPerfilMenu;
-	}
-	public void setIdRelPerfilMenu(Integer idRelPerfilMenu) {
-		this.idRelPerfilMenu = idRelPerfilMenu;
-	}
-	public Perfil getPerfil() {
-		return perfil;
-	}
-	public void setPerfil(Perfil perfil) {
-		this.perfil = perfil;
-	}
-	public CatMenu getCatMenu() {
-		return catMenu;
-	}
-	public void setCatMenu(CatMenu catMenu) {
-		this.catMenu = catMenu;
-	}
-	@Override
-	public String toString() {
-		return "RelPerfilMenu [idRelPerfilMenu=" + idRelPerfilMenu
-				+ ", perfil=" + perfil + ", catMenu=" + catMenu + "]";
 	}
 }
