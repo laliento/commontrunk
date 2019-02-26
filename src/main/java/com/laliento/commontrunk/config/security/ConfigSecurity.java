@@ -72,8 +72,8 @@ public class ConfigSecurity extends WebSecurityConfigurerAdapter {
     	//publicos
     	.antMatchers("/login.xhtml","/vendor/**","/app/**", "/image/**").permitAll()
       .antMatchers("/pages/admin/**").hasRole("ADMIN") //hasRole a�ade el prefijo _ROLE
-      .antMatchers("/pages/user/**").access("hasRole('ADMIN') OR hasRole('USER')")
-      .antMatchers("/pages/lalo/**").access("hasRole('ADMIN') OR hasRole('LALO')")
+      .antMatchers("/pages/user/**").access("hasRole('ADMIN') OR hasRole('USER') OR hasRole('LALO')")
+      .antMatchers("/pages/lalo/**").access("hasRole('LALO')")
       .antMatchers("/pages/lalo/**").access("isAuthenticated() and principal.username=='laliento'")
       .antMatchers("/pages/**").authenticated()
       .and().formLogin()  

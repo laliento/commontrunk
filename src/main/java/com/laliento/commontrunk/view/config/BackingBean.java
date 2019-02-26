@@ -61,7 +61,11 @@ public class BackingBean implements Serializable{
 			Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    auth.getAuthorities();
 			for (SimpleGrantedAuthority simpleGrantedAuthority : authorities) {//pregunta por rol cual es su p�gina de inicio
 				if(simpleGrantedAuthority.toString().equals("ROLE_ADMIN")){
-					pagina="/pages/lalo/admin.xhtml?faces-redirect=true";
+					pagina="/pages/admin/admin.xhtml?faces-redirect=true";
+				}else if(simpleGrantedAuthority.toString().equals("ROLE_LALO")){
+					pagina="/pages/lalo/lalo.xhtml?faces-redirect=true";
+				}else if(simpleGrantedAuthority.toString().equals("ROLE_USER")){
+					pagina="/pages/user/user.xhtml?faces-redirect=true";
 				}
 			}
 		}else{//regresa a loggin
