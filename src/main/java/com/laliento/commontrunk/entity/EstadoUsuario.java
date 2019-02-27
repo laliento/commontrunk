@@ -32,7 +32,6 @@ public class EstadoUsuario {
 	private String descripcion;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "estadoUsuario")
 	private Set<Usuario> usuario = new HashSet<Usuario>(0);
-	
 	public EstadoUsuario(Integer idEstadoUsuario) {
 		this.idEstadoUsuario = idEstadoUsuario;
 	}

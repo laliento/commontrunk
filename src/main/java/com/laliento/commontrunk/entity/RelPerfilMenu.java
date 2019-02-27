@@ -30,10 +30,10 @@ public class RelPerfilMenu implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idRelPerfilMenu;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_PERFIL", nullable = false)
+	@JoinColumn(name = "ID_PERFIL", nullable = false,referencedColumnName="ID_PERFIL")
 	private Perfil perfil;
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "ID_MENU", nullable = false)
+	@JoinColumn(name = "ID_MENU", nullable = false,referencedColumnName="ID_MENU")
 	private CatMenu  catMenu;
 	public RelPerfilMenu(Integer idRelPerfilMenu) {
 		this.idRelPerfilMenu = idRelPerfilMenu;

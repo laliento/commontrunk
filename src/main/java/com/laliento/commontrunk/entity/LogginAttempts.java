@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 /**
  * @author Eduardo Cruz Zamorano
  *
@@ -31,9 +33,10 @@ public class LogginAttempts implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer idLoggAtt;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name ="ID_USUARIO",nullable=false)
+	@JoinColumn(name ="ID_USUARIO",nullable=false,referencedColumnName="ID_USUARIO")
 	private Usuario usuario;
 	@Column(name="TIEMPO")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date tiempo;
 	public LogginAttempts(Usuario usuario, Date tiempo) {
 		this.usuario = usuario;

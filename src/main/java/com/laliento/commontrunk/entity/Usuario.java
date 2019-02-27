@@ -42,7 +42,7 @@ public class Usuario {
 	@Column(name="SALT",columnDefinition="char(128)")
 	private String salt;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_ESTADO_USUARIO", nullable = false)
+	@JoinColumn(name = "ID_ESTADO_USUARIO", nullable = false,referencedColumnName="ID_ESTADO_USUARIO")
 	private EstadoUsuario estadoUsuario;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ID_PERFIL", nullable = false)

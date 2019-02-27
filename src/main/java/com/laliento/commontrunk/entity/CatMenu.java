@@ -37,7 +37,7 @@ public class CatMenu implements Serializable{
 	@Column(name="DESCRIPCION",length = 50)
 	private String descripcion;
 	@ManyToOne(cascade={CascadeType.ALL})
-	@JoinColumn(name="ID_MENU_PADRE",nullable=true)
+	@JoinColumn(name="ID_MENU_PADRE",nullable=true,referencedColumnName="ID_MENU")
 	private CatMenu menuPadre;
 	@Column(name="URL",length=100,nullable=true)
 	private String url;
