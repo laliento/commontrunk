@@ -7,10 +7,8 @@ package com.laliento.commontrunk.view.config;
 public interface ViewMethodDefault {
 
 	/*
-	 * M�todos para ininicializar p�gina
+	 * method to start a pge
 	 */
-	void initPage();
-	String irPagina();
+	String goPage();
 	void loadElements();
-	void cleanPage();
 }

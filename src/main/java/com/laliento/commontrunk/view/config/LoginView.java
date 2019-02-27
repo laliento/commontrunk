@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.laliento.commontrunk.entity.CatMenu;
 import com.laliento.commontrunk.entity.RelPerfilMenu;
+import com.laliento.commontrunk.entity.Usuario;
 import com.laliento.commontrunk.repository.RelPerfilMenuRepository;
 /**
  * @author Eduardo Cruz Zamorano
@@ -23,14 +24,14 @@ import com.laliento.commontrunk.repository.RelPerfilMenuRepository;
 @Named
 @Transactional
 @lombok.Getter
-@lombok.Setter
 public class LoginView extends BackingBean implements ViewMethodDefault{
 	private static final long serialVersionUID = 1L;
 	@Autowired
 	private RelPerfilMenuRepository relPerfilMenuRepository;
 	private List<RelPerfilMenu> lstRelPerfilMenu;
+	private Usuario usuario;
 	@Override
-	public String irPagina() {
+	public String goPage() {
 		String pagina =getPageByUser(); 
 		if (pagina.contains("login"))
 			return null;
@@ -58,11 +59,7 @@ public class LoginView extends BackingBean implements ViewMethodDefault{
                         FacesContext.getCurrentInstance().getELContext(),
                         "#{"+ url +"}", String.class, new Class[0]);
         return action;
-}
-	@Override
-	public void initPage() {}
+	}
 	@Override
 	public void loadElements() {}
-	@Override
-	public void cleanPage() {}
 }

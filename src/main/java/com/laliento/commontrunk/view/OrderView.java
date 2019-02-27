@@ -5,6 +5,7 @@ package com.laliento.commontrunk.view;
 
 import javax.inject.Named;
 
+import com.laliento.commontrunk.view.config.BackingBean;
 import com.laliento.commontrunk.view.config.ViewMethodDefault;
 
 /**
@@ -13,15 +14,12 @@ import com.laliento.commontrunk.view.config.ViewMethodDefault;
  */
 @lombok.Getter
 @Named
-public class OrderView implements ViewMethodDefault{
+public class OrderView extends BackingBean implements ViewMethodDefault{
+	private static final long serialVersionUID = 1L;
 
 	@Override
-	public void initPage() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public String irPagina() {
+	public String goPage() {
+		loadElements();
 		return "order.xhtml?faces-redirect=true";
 	}
 
@@ -31,11 +29,4 @@ public class OrderView implements ViewMethodDefault{
 		
 	}
 
-	@Override
-	public void cleanPage() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	
 }

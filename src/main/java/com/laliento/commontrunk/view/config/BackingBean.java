@@ -8,15 +8,15 @@ import java.util.Properties;
 
 import javax.faces.context.FacesContext;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.persistence.internal.sessions.PropertiesHandler;
-import org.primefaces.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.laliento.commontrunk.entity.Usuario;
 import com.laliento.commontrunk.repository.UsuarioRepository;
@@ -25,40 +25,39 @@ import com.laliento.commontrunk.repository.UsuarioRepository;
  *
  */
 @Component
+@Transactional
 public class BackingBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-	protected RequestContext contextRequest;
-	protected FacesContext contextFaces = FacesContext.getCurrentInstance();
-	protected Logger log;
+	private static Logger log = LogManager.getLogger();
+	private Authentication auth;
 	private boolean flagErrorMsg;
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	private Usuario usuario;
-	private Authentication auth;
 	public BackingBean() {
-		loadLogger();
 		setFlagErrorMsg(false);	
 	}
 	public Usuario getSessionUser()
 	{	
-		getPageByUser();
-		if(this.usuario == null){
-			auth = SecurityContextHolder.getContext().getAuthentication();
-		if(auth != null)
-			return usuarioRepository.findByUsername(auth.getName());
-		}else
-			return usuario;
-		
-		return null;
+//		getPageByUser();
+		auth = getAuthentication();
+		if(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user") ==null) {
+			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user",usuarioRepository.findByUsername(auth.getName()));
+		}
+		return (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
+	}
+	public Usuario getForceSessionuser() {
+		auth = getAuthentication();
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user",usuarioRepository.findByUsername(auth.getName()));
+		return (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
 	}
 	@SuppressWarnings("unchecked")
 	public String getPageByUser(){
 		String pagina="login.xhtml?faces-redirect=true";
 //		if(auth == null) // se comenta para recuperar el role desde la p�gina de login si es que ya estaba logeado se redireccione
-		auth = SecurityContextHolder.getContext().getAuthentication();
-		if(auth.isAuthenticated()){
-			Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    auth.getAuthorities();
+		auth = getAuthentication();
+		if(auth.isAuthenticated() && auth.getName() != "anonymousUser"){
+			Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) auth.getAuthorities();
 			for (SimpleGrantedAuthority simpleGrantedAuthority : authorities) {//pregunta por rol cual es su p�gina de inicio
 				if(simpleGrantedAuthority.toString().equals("ROLE_ADMIN")){
 					pagina="/pages/admin/admin.xhtml?faces-redirect=true";
@@ -67,53 +66,15 @@ public class BackingBean implements Serializable{
 				}else if(simpleGrantedAuthority.toString().equals("ROLE_USER")){
 					pagina="/pages/user/user.xhtml?faces-redirect=true";
 				}
+				log.info("Start session user '{}' and ROLE '{}'",auth.getName(),simpleGrantedAuthority.toString());
 			}
-		}else{//regresa a loggin
-			pagina = null;
 		}
 		return pagina;
 	}
 	public Authentication getAuthentication()
 	{
-		if(auth == null)
-			auth = SecurityContextHolder.getContext().getAuthentication();
+		auth = SecurityContextHolder.getContext().getAuthentication();
 		return auth;
-	}
-	@SuppressWarnings("deprecation")
-	public void closeDialog(String widgetVarDialog, boolean flagErrorMsg) {
-		if (!flagErrorMsg) {
-			contextRequest = RequestContext.getCurrentInstance();
-			contextRequest.execute(widgetVarDialog + ".hide()");
-		}
-	}
-	@SuppressWarnings("deprecation")
-	public void openDialog(String widgetVarDialog, boolean success) {
-		if (success) {
-			contextRequest = RequestContext.getCurrentInstance();
-			contextRequest.execute(widgetVarDialog + ".show()");
-		}
-	}
-	@SuppressWarnings("deprecation")
-	public void refreshComponent(String componentUpdate) {
-		contextRequest = RequestContext.getCurrentInstance();
-		contextRequest.update(componentUpdate);
-	}
-	public void loadLogger() {
-		try {
-			if(log == null){
-				//cargda la configuraci�n desde spring desde el web.xml
-				log = Logger.getLogger(this.getClass());
-			}
-			else{
-				log = Logger.getLogger(this.getClass());
-			}
-			//System.out.println("\n -- Logger Inicializado --");
-		} catch (Exception e) {
-			BasicConfigurator.configure();
-			log = Logger.getLogger(this.getClass());
-			System.out.println("Excepcion al inicializar el log "
-					+ e.toString());
-		}
 	}
 	public static Properties loadProperties(String propertiesFileName) {
 		Properties properties = new Properties();
@@ -138,11 +99,11 @@ public class BackingBean implements Serializable{
 	}
 	public void limpiarMemoria() {
 		try {
-			log.info("INI GC.");
+			log.info("Start GC.");
 			Runtime.getRuntime().gc();
-			log.info("FIN GC.");
+			log.info("End GC.");
 		} catch (Exception e) {
-			log.error("Fallo la ejecuci�n del GC. " + e);
+			log.error("Fail into clean memory. " + e);
 		}
 	}
 	public boolean isFlagErrorMsg() {
