@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
@@ -63,8 +64,8 @@ public class ConfigSecurity extends WebSecurityConfigurerAdapter {
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
 	      http
-//    	.csrf()//todo va con https excepto
-//	      .disable()
+    	.csrf()//todo va con https excepto y para prime ya que jsf ya usa algo parecido
+	      .disable()
     .authorizeRequests()
       .antMatchers("/", "/home","/resources/**").authenticated()
     	//internos una vez autenticado
@@ -77,7 +78,7 @@ public class ConfigSecurity extends WebSecurityConfigurerAdapter {
         //Admin pages
         .antMatchers("/pages/admin/**").access("hasRole('ADMIN') OR hasRole('LALO')") //hasRole a�ade el prefijo _ROLE
         //User Pages
-    	.antMatchers("/pages/user/**").access("hasRole('ADMIN') OR hasRole('USER') OR hasRole('LALO')")
+    	.antMatchers("/pages/user/**").access("isAuthenticated() and (hasRole('ADMIN') OR hasRole('USER') OR hasRole('LALO'))")
       
       .antMatchers("/pages/**").authenticated()
       .and().formLogin()  
@@ -102,7 +103,7 @@ public class ConfigSecurity extends WebSecurityConfigurerAdapter {
 	     	.key("lalum@")//llave con la que se codifica la cookie, por defaul SpringSecured
 	     .and().requiresChannel()
 	     	.antMatchers("/").requiresSecure()//requiere https en esta parte
-	     .and().exceptionHandling().accessDeniedPage("/accesDenied.xhtml")
+	     .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler())
 //	     .and().authorizeRequests().anyRequest().permitAll()
 	     .and().sessionManagement()
 //	     	always – una sesión siempre se creará si no existe ya
@@ -114,6 +115,10 @@ public class ConfigSecurity extends WebSecurityConfigurerAdapter {
 //	     	.and().sessionFixation().migrateSession()
 	     ;
   }
+	@Bean
+	public AccessDeniedHandler accessDeniedHandler(){
+	    return new CustomAccessDeniedHandler();
+	}
 	@Bean
 	public SimpleUrlAuthenticationFailureHandler simpleUrlAuthenticationFailureHandler(){
 		return new UserNameCachingAuthenticationFailureHandlerSoftMvi();

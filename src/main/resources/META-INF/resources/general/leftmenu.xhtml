@@ -7,7 +7,6 @@
     xmlns:p="http://primefaces.org/ui"
     xmlns:c="http://java.sun.com/jsp/jstl/core">
     
-
 	 <aside class="aside">
          <!-- START Sidebar (left)-->
          <aside class="aside">
@@ -66,7 +65,6 @@
                </li>
                <!-- END user info-->
                <!-- START Menu-->
-               
                <c:forEach var="menuVar" items="#{loginView.lstRelPerfilMenu}">
 	               <li>
 	                  <a href="#" title="#{menuVar.catMenu.descripcion}" data-toggle="collapse-next" class="fa #{menuVar.catMenu.icono}">
@@ -75,42 +73,31 @@
 	                  </a>
 	                  <c:forEach var="submenu" items="#{menuVar.catMenu.subMenus}">
 		                  <ul class="nav collapse ">
-		                     <li>
-		                        <a href="#{facesContext.externalContext.requestContextPath}#{submenu.url}" title="#{submenu.descripcion}" data-toggle="" class="no-submenu">
-		                           <em class="fa #{submenu.icono}"></em>#{submenu.descripcion}
-		                        </a>
-		                     </li>
+							<h:form class="no-submenu">
+								<li>
+									<em class="fa #{submenu.icono}">
+										<h:commandLink binding ="#{submenu.link}" data-toggle="" style="
+										    left: 100%;
+										    top: 0;
+										    padding-left: 20px;
+										    font-weight: normal;
+										    line-height: 40px;
+										    white-space: nowrap;
+										    color: #fff;
+										    background: #212429;
+										    z-index: 2002
+										"/>
+									</em>
+								</li>
+							</h:form>
+							
 		                  </ul>
 	                  </c:forEach>
 	               </li>
                </c:forEach>
-               
-               
-               
-               
-               
             </ul>
          </nav>
          <!-- END Sidebar (left)-->
       </aside>
       </aside>
-	<!-- <c:forEach var="menuVar" items="#{menuView.leftMenuList}">
-					
-					<li id="sm_sentineltheme" role="menuitem">
-						<a href="#" onclick="Sentinel.toggleSubMenu(this);return false;" style="text-decoration: none;">	
-							<i class="#{menuVar.icon}"></i> #{menuVar.label}<i class="icon-angle-down Fright"></i>
-						</a>
-						
-						<ul class="layout-menubar-submenu-container" role="menu">
-							<c:forEach var="submenu" items="#{menuVar.submenus}">
-								<li>
-									<h:commandLink binding="#{submenu.link}">
-										<f:actionListener type="mx.com.walmart.fyd.view.ResetViewListener"></f:actionListener>
-									</h:commandLink>
-								</li> 
-							</c:forEach>
-						</ul>
-					</li>
-				</c:forEach> -->
-	
 </ui:composition>

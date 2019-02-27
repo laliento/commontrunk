@@ -33,7 +33,14 @@
 	      </dependency>
 	    </dependencies>
 	  </dependencyManagement>
-
+	<repositories>
+	    <repository>
+	        <id>prime-repo</id>
+	        <name>PrimeFaces Maven Repository</name>
+	        <url>http://repository.primefaces.org</url>
+	        <layout>default</layout>
+	    </repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -85,6 +92,11 @@
       	<groupId>javax.enterprise</groupId>
 	      <artifactId>cdi-api</artifactId>
 	    </dependency>
+	    <dependency>
+		    <groupId>org.primefaces.themes</groupId>
+		    <artifactId>cupertino</artifactId>
+		    <version>1.0.10</version>
+		</dependency>
 	    <!-- Log4j -->
 		<dependency>
 			<groupId>log4j</groupId>

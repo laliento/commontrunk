@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.faces.component.html.HtmlCommandLink;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 /**
  * @author Eduardo Cruz Zamorano
  *
@@ -45,6 +47,8 @@ public class CatMenu implements Serializable{
 	private String icono;
 	@OneToMany(mappedBy="menuPadre")
 	private Set<CatMenu> subMenus = new HashSet<CatMenu>();
+	@Transient
+	private HtmlCommandLink link;
 	public CatMenu(String descripcion, CatMenu menuPadre, String url, Integer orden,
 			String icono) {
 		super();
