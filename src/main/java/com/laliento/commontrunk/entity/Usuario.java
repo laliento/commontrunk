@@ -41,10 +41,10 @@ public class Usuario {
 	private String password;
 	@Column(name="SALT",columnDefinition="char(128)")
 	private String salt;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ID_ESTADO_USUARIO", nullable = false,referencedColumnName="ID_ESTADO_USUARIO")
 	private EstadoUsuario estadoUsuario;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ID_PERFIL", nullable = false)
 	private Perfil perfil;
 	@Column(name="ENABLE",columnDefinition = "TINYINT")

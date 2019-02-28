@@ -67,7 +67,7 @@ CREATE TABLE `CAT_MENU` (
 
 LOCK TABLES `CAT_MENU` WRITE;
 /*!40000 ALTER TABLE `CAT_MENU` DISABLE KEYS */;
-INSERT INTO `CAT_MENU` VALUES (1,'menuPrueba','fa-anchor',1,NULL,NULL),(2,'Submenu','fa-arrows-v',1,'/pages/admin/otro.xhtml',1),(3,'Pedido','fa-anchor',2,NULL,NULL),(4,'Orden','fa-arrows-v',1,'orderView.irPagina',3),(5,'Consulta Orden','fa-anchor',2,'consultaOrderView.irPagina',3);
+INSERT INTO `CAT_MENU` VALUES (1,'menuPrueba','fa-anchor',1,NULL,NULL),(2,'Submenu','fa-arrows-v',1,'/pages/admin/otro.xhtml',1),(3,'Pedido','fa-anchor',2,NULL,NULL),(4,'Orden','fa-arrows-v',1,'orderView.goPage',3),(5,'Consulta Orden','fa-anchor',2,'consultaOrderView.goPage',3);
 /*!40000 ALTER TABLE `CAT_MENU` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -525,4 +525,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-02-27  3:44:05
+-- Dump completed on 2019-02-27 18:09:30

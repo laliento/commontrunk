@@ -7,7 +7,7 @@ package com.laliento.commontrunk.view.config;
 public interface ViewMethodDefault {
 
 	/*
-	 * method to start a pge
+	 * method to start one page
 	 */
 	String goPage();
 	void loadElements();

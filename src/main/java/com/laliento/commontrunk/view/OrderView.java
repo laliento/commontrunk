@@ -6,6 +6,7 @@ package com.laliento.commontrunk.view;
 import javax.inject.Named;
 
 import com.laliento.commontrunk.view.config.BackingBean;
+import com.laliento.commontrunk.view.config.UserType;
 import com.laliento.commontrunk.view.config.ViewMethodDefault;
 
 /**
@@ -20,7 +21,7 @@ public class OrderView extends BackingBean implements ViewMethodDefault{
 	@Override
 	public String goPage() {
 		loadElements();
-		return "order.xhtml?faces-redirect=true";
+		return createPage(UserType.USER);
 	}
 
 	@Override
@@ -28,5 +29,4 @@ public class OrderView extends BackingBean implements ViewMethodDefault{
 		// TODO Auto-generated method stub
 		
 	}
-
 }

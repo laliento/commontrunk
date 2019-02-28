@@ -4,6 +4,9 @@ package com.laliento.commontrunk.util;
  *
  */
 public enum Constants {
+	ADMIN_URL("/pages/admin/admin.xhtml"),
+	USER_URL("/pages/user/user.xhtml"),
+	LALO_URL("/pages/lalo/lalo.xhtml"),
 	NAME_SYSTEM("SoftMvi"),
 	SESSION_USER_kEY("SessionUser"),
 	CONSTANTE_ESTATUS_ACTIVO(Integer.valueOf(1)),

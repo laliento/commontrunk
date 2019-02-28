@@ -16,24 +16,30 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.laliento.commontrunk.entity.Usuario;
 import com.laliento.commontrunk.repository.UsuarioRepository;
+import com.laliento.commontrunk.util.Constants;
 /**
  * @author Eduardo Cruz Zamorano
  *
  */
 @Component
-@Transactional
 public class BackingBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-	private static Logger log = LogManager.getLogger();
+	protected static final Logger LOG = LogManager.getLogger();
 	private Authentication auth;
 	private boolean flagErrorMsg;
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	protected  final String createPage(UserType userType) {
+		return new StringBuilder().append("/pages/")
+				.append(userType.getUserType())
+				.append("/")
+				.append(this.getClass().getSimpleName().replace("View", "").toLowerCase())
+				.append(".xhtml").toString();
+	}
 	public BackingBean() {
 		setFlagErrorMsg(false);	
 	}
@@ -53,20 +59,20 @@ public class BackingBean implements Serializable{
 	}
 	@SuppressWarnings("unchecked")
 	public String getPageByUser(){
-		String pagina="login.xhtml?faces-redirect=true";
+		String pagina=null;
 //		if(auth == null) // se comenta para recuperar el role desde la p�gina de login si es que ya estaba logeado se redireccione
 		auth = getAuthentication();
 		if(auth.isAuthenticated() && auth.getName() != "anonymousUser"){
 			Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) auth.getAuthorities();
 			for (SimpleGrantedAuthority simpleGrantedAuthority : authorities) {//pregunta por rol cual es su p�gina de inicio
 				if(simpleGrantedAuthority.toString().equals("ROLE_ADMIN")){
-					pagina="/pages/admin/admin.xhtml?faces-redirect=true";
+					pagina=Constants.ADMIN_URL.getString();
 				}else if(simpleGrantedAuthority.toString().equals("ROLE_LALO")){
-					pagina="/pages/lalo/lalo.xhtml?faces-redirect=true";
+					pagina=Constants.LALO_URL.getString();
 				}else if(simpleGrantedAuthority.toString().equals("ROLE_USER")){
-					pagina="/pages/user/user.xhtml?faces-redirect=true";
+					pagina=Constants.USER_URL.getString();
 				}
-				log.info("Start session user '{}' and ROLE '{}'",auth.getName(),simpleGrantedAuthority.toString());
+				LOG.info("Start session user '{}' and ROLE '{}'",auth.getName(),simpleGrantedAuthority.toString());
 			}
 		}
 		return pagina;
@@ -99,11 +105,11 @@ public class BackingBean implements Serializable{
 	}
 	public void limpiarMemoria() {
 		try {
-			log.info("Start GC.");
+			LOG.info("Start GC.");
 			Runtime.getRuntime().gc();
-			log.info("End GC.");
+			LOG.info("End GC.");
 		} catch (Exception e) {
-			log.error("Fail into clean memory. " + e);
+			LOG.error("Fail into clean memory. " + e);
 		}
 	}
 	public boolean isFlagErrorMsg() {
