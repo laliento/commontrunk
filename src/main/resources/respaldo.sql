@@ -12,9 +12,24 @@ USE `commonTrunk`;
 /*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `CAT_ESTADO_USUARIO`
+--
+
+DROP TABLE IF EXISTS `CAT_ESTADO_USUARIO`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `CAT_ESTADO_USUARIO` (
+  `ID_ESTADO_USUARIO` int(11) NOT NULL AUTO_INCREMENT,
+  `DESCRIPCION` varchar(255) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  PRIMARY KEY (`ID_ESTADO_USUARIO`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `CAT_ESTADO_USUARIO`
@@ -27,6 +42,26 @@ INSERT INTO `CAT_ESTADO_USUARIO` VALUES (1,'Active'),(2,'Inactive');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `CAT_MENU`
+--
+
+DROP TABLE IF EXISTS `CAT_MENU`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `CAT_MENU` (
+  `ID_MENU` int(11) NOT NULL AUTO_INCREMENT,
+  `DESCRIPCION` varchar(50) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `ICONO` varchar(50) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `ORDEN` int(11) DEFAULT NULL,
+  `URL` varchar(100) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `ID_MENU_PADRE` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID_MENU`),
+  KEY `FK_MENU_MENUP` (`ID_MENU_PADRE`),
+  CONSTRAINT `FK_MENU_MENUP` FOREIGN KEY (`ID_MENU_PADRE`) REFERENCES `CAT_MENU` (`ID_MENU`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `CAT_MENU`
 --
 
@@ -37,6 +72,20 @@ INSERT INTO `CAT_MENU` VALUES (1,'menuPrueba','fa-anchor',1,NULL,NULL),(2,'Subme
 UNLOCK TABLES;
 
 --
+-- Table structure for table `CAT_ORDER_STATE`
+--
+
+DROP TABLE IF EXISTS `CAT_ORDER_STATE`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `CAT_ORDER_STATE` (
+  `ID_ORDER_STATE` int(11) NOT NULL AUTO_INCREMENT,
+  `DESCRIPTION` varchar(45) COLLATE utf8_spanish2_ci NOT NULL,
+  PRIMARY KEY (`ID_ORDER_STATE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `CAT_ORDER_STATE`
 --
 
@@ -44,6 +93,20 @@ LOCK TABLES `CAT_ORDER_STATE` WRITE;
 /*!40000 ALTER TABLE `CAT_ORDER_STATE` DISABLE KEYS */;
 /*!40000 ALTER TABLE `CAT_ORDER_STATE` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `CAT_PERFIL`
+--
+
+DROP TABLE IF EXISTS `CAT_PERFIL`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `CAT_PERFIL` (
+  `ID_PERFIL` int(11) NOT NULL AUTO_INCREMENT,
+  `DESCRIPCION` varchar(255) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  PRIMARY KEY (`ID_PERFIL`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `CAT_PERFIL`
@@ -56,13 +119,49 @@ INSERT INTO `CAT_PERFIL` VALUES (1,'ADMIN'),(2,'USER'),(3,'LALO');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `CAT_PRODUCT_STATE`
+--
+
+DROP TABLE IF EXISTS `CAT_PRODUCT_STATE`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `CAT_PRODUCT_STATE` (
+  `ID_PRODUCT_STATE` int(11) NOT NULL AUTO_INCREMENT,
+  `DESCRIPTION` varchar(45) COLLATE utf8_spanish2_ci NOT NULL,
+  PRIMARY KEY (`ID_PRODUCT_STATE`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `CAT_PRODUCT_STATE`
 --
 
 LOCK TABLES `CAT_PRODUCT_STATE` WRITE;
 /*!40000 ALTER TABLE `CAT_PRODUCT_STATE` DISABLE KEYS */;
+INSERT INTO `CAT_PRODUCT_STATE` VALUES (1,'Activo'),(2,'Inactivo');
 /*!40000 ALTER TABLE `CAT_PRODUCT_STATE` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `ENT_ORDER_DET`
+--
+
+DROP TABLE IF EXISTS `ENT_ORDER_DET`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ENT_ORDER_DET` (
+  `ID_ORDER_DET` int(11) NOT NULL AUTO_INCREMENT,
+  `ID_ORDER_ENC` int(11) NOT NULL,
+  `ID_PRODUCT` int(11) NOT NULL,
+  `PRICE` decimal(15,2) NOT NULL,
+  `QUANTITY` int(11) NOT NULL,
+  PRIMARY KEY (`ID_ORDER_DET`),
+  KEY `fk_ORDERDET_ENC_idx` (`ID_ORDER_ENC`),
+  KEY `FK_ORDER_PRODUCT_idx` (`ID_PRODUCT`),
+  CONSTRAINT `FK_ORDERDET_ENC` FOREIGN KEY (`ID_ORDER_ENC`) REFERENCES `ENT_ORDER_ENC` (`ID_ORDER_ENC`),
+  CONSTRAINT `FK_ORDER_PRODUCT` FOREIGN KEY (`ID_PRODUCT`) REFERENCES `ENT_PRODUCT` (`ID_PRODUCT`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `ENT_ORDER_DET`
@@ -74,6 +173,34 @@ LOCK TABLES `ENT_ORDER_DET` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `ENT_ORDER_ENC`
+--
+
+DROP TABLE IF EXISTS `ENT_ORDER_ENC`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ENT_ORDER_ENC` (
+  `ID_ORDER_ENC` int(11) NOT NULL AUTO_INCREMENT,
+  `ID_ADMIN_USER` int(11) NOT NULL,
+  `ID_DELIVERY_USER` int(11) NOT NULL,
+  `ID_CUSTOMER_USER` int(11) NOT NULL COMMENT '	',
+  `ID_ORDER_STATE` int(11) NOT NULL,
+  `CREATION_DATE` datetime NOT NULL,
+  `LAST_UPDATE` datetime NOT NULL,
+  `ADITIONAL_INFO` varchar(500) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  PRIMARY KEY (`ID_ORDER_ENC`),
+  KEY `FK_ORDER_ADMIN_idx` (`ID_ADMIN_USER`),
+  KEY `FK_ORDER_DELIVERY_idx` (`ID_DELIVERY_USER`),
+  KEY `FK_ORDER_CUSTOMER_idx` (`ID_CUSTOMER_USER`),
+  KEY `FK_ORDER_STATE_idx` (`ID_ORDER_STATE`),
+  CONSTRAINT `FK_ORDER_ADMIN` FOREIGN KEY (`ID_ADMIN_USER`) REFERENCES `ENT_USUARIO` (`ID_USUARIO`),
+  CONSTRAINT `FK_ORDER_CUSTOMER` FOREIGN KEY (`ID_CUSTOMER_USER`) REFERENCES `ENT_USUARIO` (`ID_USUARIO`),
+  CONSTRAINT `FK_ORDER_DELIVERY` FOREIGN KEY (`ID_DELIVERY_USER`) REFERENCES `ENT_USUARIO` (`ID_USUARIO`),
+  CONSTRAINT `FK_ORDER_STATE` FOREIGN KEY (`ID_ORDER_STATE`) REFERENCES `CAT_ORDER_STATE` (`ID_ORDER_STATE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `ENT_ORDER_ENC`
 --
 
@@ -83,13 +210,62 @@ LOCK TABLES `ENT_ORDER_ENC` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `ENT_PRODUCT`
+--
+
+DROP TABLE IF EXISTS `ENT_PRODUCT`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ENT_PRODUCT` (
+  `ID_PRODUCT` int(11) NOT NULL AUTO_INCREMENT,
+  `ID_PRODUCT_STATE` int(11) NOT NULL,
+  `PRICE` decimal(15,2) NOT NULL,
+  `GENERIC_DESCRIPTION` varchar(200) COLLATE utf8_spanish2_ci NOT NULL,
+  `BRAND` varchar(200) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `SUBBRAND` varchar(200) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `MODEL_STYLE_TYPE` varchar(200) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  PRIMARY KEY (`ID_PRODUCT`),
+  KEY `FK_PRODUCT_STATE_idx` (`ID_PRODUCT_STATE`),
+  CONSTRAINT `FK_PRODUCT_STATE` FOREIGN KEY (`ID_PRODUCT_STATE`) REFERENCES `CAT_PRODUCT_STATE` (`ID_PRODUCT_STATE`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `ENT_PRODUCT`
 --
 
 LOCK TABLES `ENT_PRODUCT` WRITE;
 /*!40000 ALTER TABLE `ENT_PRODUCT` DISABLE KEYS */;
+INSERT INTO `ENT_PRODUCT` VALUES (1,1,10.00,'coca',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `ENT_PRODUCT` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `ENT_USUARIO`
+--
+
+DROP TABLE IF EXISTS `ENT_USUARIO`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ENT_USUARIO` (
+  `ID_USUARIO` int(11) NOT NULL AUTO_INCREMENT,
+  `APELLIDO_MATERNO` varchar(255) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `APELLIDO_PATERNO` varchar(255) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `CORREO` varchar(255) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `ENABLE` tinyint(4) DEFAULT NULL,
+  `NOMBRE` varchar(255) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `PASSWORD` char(128) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `SALT` char(128) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `USERNAME` varchar(255) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `ID_ESTADO_USUARIO` int(11) NOT NULL,
+  `ID_PERFIL` int(11) NOT NULL,
+  PRIMARY KEY (`ID_USUARIO`),
+  KEY `FK_USUARIO_PERFIL` (`ID_PERFIL`),
+  KEY `FK_USUARIO_ESTADO` (`ID_ESTADO_USUARIO`),
+  CONSTRAINT `FK_USUARIO_ESTADO` FOREIGN KEY (`ID_ESTADO_USUARIO`) REFERENCES `CAT_ESTADO_USUARIO` (`ID_ESTADO_USUARIO`),
+  CONSTRAINT `FK_USUARIO_PERFIL` FOREIGN KEY (`ID_PERFIL`) REFERENCES `CAT_PERFIL` (`ID_PERFIL`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `ENT_USUARIO`
@@ -102,6 +278,23 @@ INSERT INTO `ENT_USUARIO` VALUES (1,'Zamorano','Cruz','eduardo.cz.mac@gmail.com'
 UNLOCK TABLES;
 
 --
+-- Table structure for table `LOGGIN_ATTEMPTS`
+--
+
+DROP TABLE IF EXISTS `LOGGIN_ATTEMPTS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `LOGGIN_ATTEMPTS` (
+  `ID_LOGG_ATT` int(11) NOT NULL AUTO_INCREMENT,
+  `TIEMPO` datetime NOT NULL,
+  `ID_USUARIO` int(11) NOT NULL,
+  PRIMARY KEY (`ID_LOGG_ATT`),
+  KEY `FK_LOGGINATT_USUARIO` (`ID_USUARIO`),
+  CONSTRAINT `FK_LOGGINATT_USUARIO` FOREIGN KEY (`ID_USUARIO`) REFERENCES `ENT_USUARIO` (`ID_USUARIO`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `LOGGIN_ATTEMPTS`
 --
 
@@ -110,6 +303,21 @@ LOCK TABLES `LOGGIN_ATTEMPTS` WRITE;
 INSERT INTO `LOGGIN_ATTEMPTS` VALUES (1,'2019-02-28 00:22:39',2),(2,'2019-02-28 00:25:24',1);
 /*!40000 ALTER TABLE `LOGGIN_ATTEMPTS` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `PARAMETRO_GENERAL`
+--
+
+DROP TABLE IF EXISTS `PARAMETRO_GENERAL`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `PARAMETRO_GENERAL` (
+  `CLAVE` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
+  `DESCRIPCION` varchar(100) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `VALOR` varchar(500) COLLATE utf8_spanish2_ci NOT NULL,
+  PRIMARY KEY (`CLAVE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `PARAMETRO_GENERAL`
@@ -122,6 +330,25 @@ INSERT INTO `PARAMETRO_GENERAL` VALUES ('intentosPermitidosLoggin','login fails 
 UNLOCK TABLES;
 
 --
+-- Table structure for table `REL_PERFIL_MENU`
+--
+
+DROP TABLE IF EXISTS `REL_PERFIL_MENU`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `REL_PERFIL_MENU` (
+  `ID_REL_PERFIL_MENU` int(11) NOT NULL AUTO_INCREMENT,
+  `ID_MENU` int(11) NOT NULL,
+  `ID_PERFIL` int(11) NOT NULL,
+  PRIMARY KEY (`ID_REL_PERFIL_MENU`),
+  KEY `FK_REL_PERFILMENU_MENU` (`ID_MENU`),
+  KEY `FK_REL_PERFILMENU_PERFIL` (`ID_PERFIL`),
+  CONSTRAINT `FK_REL_PERFILMENU_MENU` FOREIGN KEY (`ID_MENU`) REFERENCES `CAT_MENU` (`ID_MENU`),
+  CONSTRAINT `FK_REL_PERFILMENU_PERFIL` FOREIGN KEY (`ID_PERFIL`) REFERENCES `CAT_PERFIL` (`ID_PERFIL`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `REL_PERFIL_MENU`
 --
 
@@ -130,6 +357,22 @@ LOCK TABLES `REL_PERFIL_MENU` WRITE;
 INSERT INTO `REL_PERFIL_MENU` VALUES (1,1,1),(2,2,1),(3,3,2),(4,4,2),(5,5,2),(6,3,3),(7,4,3),(8,5,3);
 /*!40000 ALTER TABLE `REL_PERFIL_MENU` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `persistent_logins`
+--
+
+DROP TABLE IF EXISTS `persistent_logins`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `persistent_logins` (
+  `username` varchar(64) COLLATE utf8_spanish2_ci NOT NULL,
+  `series` varchar(64) COLLATE utf8_spanish2_ci NOT NULL,
+  `token` varchar(64) COLLATE utf8_spanish2_ci NOT NULL,
+  `last_used` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`series`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `persistent_logins`
@@ -279,9 +522,10 @@ DELIMITER ;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-27 13:20:47
+-- Dump completed on 2019-04-05 22:42:25
