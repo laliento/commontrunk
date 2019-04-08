@@ -2,6 +2,7 @@ package com.laliento.commontrunk.service;
 
 import java.util.List;
 
+import com.laliento.commontrunk.entity.Product;
 import com.laliento.commontrunk.entity.Usuario;
 
 /**
@@ -11,4 +12,6 @@ import com.laliento.commontrunk.entity.Usuario;
 public interface ProductServiceInterface {
 
 	public List<Usuario> buscaUsuario();
+	
+	public List<Product> findAll();
 }

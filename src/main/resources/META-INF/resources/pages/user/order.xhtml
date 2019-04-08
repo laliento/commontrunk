@@ -8,6 +8,51 @@ xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:p="http://primefaces.org/ui"
 >
 	<ui:define name="content">
-		Order
-    </ui:define>
+	 	<p:outputPanel style="text-align:center">
+	        <h2>Orden</h2>
+	    </p:outputPanel>
+		
+	<h:form id="orderForm">
+	    <p:messages>
+	        <p:autoUpdate />
+	    </p:messages>
+	 
+	    <p:outputPanel deferred="true" style="text-align:left">
+	        <h3>Agregar Producto</h3>
+	    </p:outputPanel>
+	<hr />
+		<h:panelGrid columns="5" style="margin:30px" cellpadding="5" id="orderPanel">
+		    <p:selectOneMenu id="product" value="#{orderView.item}" >
+		    	<f:selectItem itemLabel="Selecciona" itemValue="" />
+		        <f:selectItems value="#{orderView.lstProducts}" />
+			</p:selectOneMenu>
+			<h:outputLabel value="Cantidad:" style="font-weight:bold" />
+	        <p:inputText id="cantidad" value="#{orderView.cantidad}" size="5"/>
+	        <p:commandButton value="Agregar" action="#{orderView.addItem}" update="orden orderPanel" icon="pi pi-check" />
+	        <p:commandButton value="Quitar" action="#{orderView.removeItem}" update="orden orderPanel" icon="pi pi-check" /> 
+		</h:panelGrid>
+	<hr />
+	<p:dataTable var="order" value="#{orderView.order}" id="orden" 
+			resizableColumns="true" style="width:25%;margin:auto"
+			 emptyMessage="Agrega Productos a tu Orden" >
+	    <p:column headerText="Producto">
+	        <h:outputText value="#{order.key}" />
+	    </p:column>
+	 
+	    <p:column headerText="Cantidad">
+	        <h:outputText value="#{order.value}" />
+	    </p:column>
+	 	 
+	</p:dataTable>
+	<hr />
+	<h:panelGrid style="margin:auto">
+		<p:commandButton value="Guardar" action="#{orderView.saveOrder}" update="orden orderPanel" >
+			<em class="fa fa-save"/>
+		</p:commandButton>
+	</h:panelGrid>
+		  
+	</h:form>
+		
+	</ui:define>
+    
 </ui:composition>
