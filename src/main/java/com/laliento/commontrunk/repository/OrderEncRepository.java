@@ -3,14 +3,13 @@ package com.laliento.commontrunk.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.laliento.commontrunk.entity.Product;
+import com.laliento.commontrunk.entity.OrderEnc;
 
 /**
- * @author Eduardo Cruz Zamorano
+ * @author Miguel
  *
  */
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Integer> {
-
+public interface OrderEncRepository extends JpaRepository<OrderEnc, Integer>{
 
 }

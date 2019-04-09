@@ -35,4 +35,11 @@ public class OrderState {
 	private String description;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idEncOrderEnc")
 	private Set<OrderEnc> order;
+	
+	public OrderState(Integer idOrderState) {
+		super();
+		this.idOrderState = idOrderState;
+	}
+	
+	
 }
