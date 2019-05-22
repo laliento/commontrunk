@@ -29,6 +29,7 @@ import javax.persistence.Table;
 public class OrderDet {
 
 	@Id
+	@Column(name="ID_ORDER_DET")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer idOrderDet;
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -41,4 +42,16 @@ public class OrderDet {
 	private BigDecimal price;
 	@Column(name="QUANTITY",nullable=false)
 	private Integer quantity;
+	
+	public OrderDet(Integer idOrderDet) {
+		super();
+		this.idOrderDet = idOrderDet;
+	}
+
+	public OrderDet(OrderEnc orderEnc) {
+		super();
+		this.orderEnc = orderEnc;
+	}
+	
+	
 }

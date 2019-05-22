@@ -71,6 +71,8 @@ public class BackingBean implements Serializable{
 					pagina=Constants.LALO_URL.getString();
 				}else if(simpleGrantedAuthority.toString().equals("ROLE_USER")){
 					pagina=Constants.USER_URL.getString();
+				}else if(simpleGrantedAuthority.toString().equals("ROLE_DELIVERY")){
+					pagina=Constants.DELIVERY_URL.getString();
 				}
 				LOG.info("Start session user '{}' and ROLE '{}'",auth.getName(),simpleGrantedAuthority.toString());
 			}

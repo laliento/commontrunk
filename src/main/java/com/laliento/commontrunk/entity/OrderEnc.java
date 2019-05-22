@@ -55,4 +55,15 @@ public class OrderEnc {
 	@Column(name="ADITIONAL_INFO",length=500)
 	private String aditionalInfo;
 	
+	public OrderEnc(Integer idEncOrderEnc) {
+		super();
+		this.idEncOrderEnc = idEncOrderEnc;
+	}
+
+	public OrderEnc(OrderState orderState) {
+		super();
+		this.orderState = orderState;
+	}
+	
+	
 }

@@ -7,24 +7,25 @@ xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 >
-	<ui:define name="content">
+
+<ui:define name="content">
 	 	<p:outputPanel style="text-align:center">
 	        <h2>Orden</h2>
 	    </p:outputPanel>
 		
 	<h:form id="orderForm">
-	    <p:messages>
+	    <p:messages id="messages" showDetail="true" closable="true">
 	        <p:autoUpdate />
 	    </p:messages>
-	 
-	    <p:outputPanel deferred="true" style="text-align:left">
+	    <p:outputPanel deferred="true" style="padding-left:2%">
 	        <h3>Agregar Producto</h3>
 	    </p:outputPanel>
 	<hr />
 		<h:panelGrid columns="5" style="margin:30px" cellpadding="5" id="orderPanel">
 		    <p:selectOneMenu id="product" value="#{orderView.item}" >
 		    	<f:selectItem itemLabel="Selecciona" itemValue="" />
-		        <f:selectItems value="#{orderView.lstProducts}" />
+		        <!-- <f:selectItems value="#{orderView.lstProducts}" /> -->
+		         <f:selectItems value="#{orderView.lstProductsprice.entrySet()}" var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
 			</p:selectOneMenu>
 			<h:outputLabel value="Cantidad:" style="font-weight:bold" />
 	        <p:inputText id="cantidad" value="#{orderView.cantidad}" size="5"/>
@@ -32,7 +33,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 	        <p:commandButton value="Quitar" action="#{orderView.removeItem}" update="orden orderPanel" icon="pi pi-check" /> 
 		</h:panelGrid>
 	<hr />
-	<p:dataTable var="order" value="#{orderView.order}" id="orden" 
+	<p:dataTable var="order" value="#{orderView.orderShow}" id="orden" 
 			resizableColumns="true" style="width:25%;margin:auto"
 			 emptyMessage="Agrega Productos a tu Orden" >
 	    <p:column headerText="Producto">
@@ -53,6 +54,6 @@ xmlns="http://www.w3.org/1999/xhtml"
 		  
 	</h:form>
 		
-	</ui:define>
+</ui:define>
     
 </ui:composition>

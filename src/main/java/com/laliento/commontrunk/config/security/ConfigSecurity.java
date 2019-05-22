@@ -79,6 +79,8 @@ public class ConfigSecurity extends WebSecurityConfigurerAdapter {
         .antMatchers("/pages/admin/**").access("hasRole('ADMIN') OR hasRole('LALO')") //hasRole a�ade el prefijo _ROLE
         //User Pages
     	.antMatchers("/pages/user/**").access("isAuthenticated() and (hasRole('ADMIN') OR hasRole('USER') OR hasRole('LALO'))")
+    	//Delivery Pages
+    	.antMatchers("/pages/delivery/**").access("isAuthenticated() and (hasRole('ADMIN') OR hasRole('DELIVERY') OR hasRole('LALO'))")
       
       .antMatchers("/pages/**").authenticated()
       .and().formLogin()  

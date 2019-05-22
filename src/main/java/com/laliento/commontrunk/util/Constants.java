@@ -6,6 +6,7 @@ package com.laliento.commontrunk.util;
 public enum Constants {
 	ADMIN_URL("/pages/admin/admin.xhtml"),
 	USER_URL("/pages/user/user.xhtml"),
+	DELIVERY_URL("/pages/delivery/delivery.xhtml"),
 	LALO_URL("/pages/lalo/lalo.xhtml"),
 	NAME_SYSTEM("SoftMvi"),
 	SESSION_USER_kEY("SessionUser"),
@@ -56,10 +57,15 @@ public enum Constants {
 	CHAR_IGUAL ("="),
 	EXTRACCION_CHUNK(10000),
 	DEFAULT_CHARSET("UTF-8"),
-	CONSTANTE_CARACTER_PUNTO(".")
-	,
+	CONSTANTE_CARACTER_PUNTO("."),
 	LOGATT_MINUTOS_CUENTA_BLOQUEADA(120),
 	LOGATT_NUMERO_INTENTOS_PERMITIDOS(2),
+	ADMIN_USER(1),
+	DELIVERY_USER(3),
+	PENDING_ORDER(1),
+	ASSIGNED(2),
+	ON_WAY(3),
+	DELIVERED(4)
 	;
 	
 	private String string;
