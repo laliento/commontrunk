@@ -34,4 +34,9 @@ public class OrderEncService implements OrderEncServiceInterface {
 		return orderEncRepository.save(orderEnc);
 	}
 
+	public OrderEnc updateStatus(OrderEnc orderEnc) {
+		return orderEncRepository.save(orderEnc);
+		
+	}
+
 }

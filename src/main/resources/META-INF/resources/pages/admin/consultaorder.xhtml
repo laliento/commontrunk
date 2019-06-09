@@ -49,13 +49,13 @@ xmlns="http://www.w3.org/1999/xhtml"
 							</p:commandButton>
 						</p:column>
 						<p:column headerText="Administrador">
-							<h:outputText value="#{order.usuarioAdmin.nombre}"/>&nbsp;<h:outputText value="#{order.usuarioAdmin.apellidoMaterno}"/>
+							<h:outputText value="#{order.usuarioAdmin.nombre}"/>&nbsp;<h:outputText value="#{order.usuarioAdmin.apellidoPaterno}"/>
 						</p:column>
 						<p:column headerText="Repartidor">
-							<h:outputText value="#{order.usuarioDelivery.nombre}"/>&nbsp;<h:outputText value="#{order.usuarioDelivery.apellidoMaterno}"/>
+							<h:outputText value="#{order.usuarioDelivery.nombre}"/>&nbsp;<h:outputText value="#{order.usuarioDelivery.apellidoPaterno}"/>
 						</p:column>
 						<p:column headerText="Cliente">
-							<h:outputText value="#{order.usuarioCustomer.nombre}"/>&nbsp;<h:outputText value="#{order.usuarioCustomer.apellidoMaterno}"/>
+							<h:outputText value="#{order.usuarioCustomer.nombre}"/>&nbsp;<h:outputText value="#{order.usuarioCustomer.apellidoPaterno}"/>
 						</p:column>
 						<p:column headerText="Estado">
 							<h:outputText value="#{order.orderState.description}"/>
@@ -66,8 +66,6 @@ xmlns="http://www.w3.org/1999/xhtml"
 				        Cargando<br />
 				    </p:blockUI>
 				     -->
-				     
-				   
 				</div>
 		</p:panel>
 	</h:form>
@@ -76,21 +74,43 @@ xmlns="http://www.w3.org/1999/xhtml"
 				    	showEffect="clip" hideEffect="fold" modal="false" width="960" height="600">
 		<h:form id="frmDetail">			
 			<p:dataTable id="resulTable" var="order" value="#{consultaOrderView.selectedOrder}" emptyMessage="Sin registros"
-								 resizableColumns="true" >
+								editable="true" resizableColumns="true" >
+				<p:ajax event="rowEdit" listener="#{consultaOrderView.onRowEdit}" update=":frmConsulta:resulTable"/>
 				<p:column headerText="Id Orden" width="10%">
 					<h:outputText value="#{order.idEncOrderEnc}" styleClass="hardblue"/>
 				</p:column>
 				<p:column headerText="Administrador">
-					<h:outputText value="#{order.usuarioAdmin.nombre}"/>&nbsp;<h:outputText value="#{order.usuarioAdmin.apellidoMaterno}"/>
+					<h:outputText value="#{order.usuarioAdmin.nombre}"/>&nbsp;<h:outputText value="#{order.usuarioAdmin.apellidoPaterno}"/>
 				</p:column>
 				<p:column headerText="Repartidor">
-					<h:outputText value="#{order.usuarioDelivery.nombre}"/>&nbsp;<h:outputText value="#{order.usuarioDelivery.apellidoMaterno}"/>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{order.usuarioDelivery.nombre}"/>
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu id="idRepartidor" value="#{consultaOrderView.idUsuarioRepartidor}" >
+						       	<f:selectItems value="#{consultaOrderView.lstRepartidores.entrySet()}" var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
+							</p:selectOneMenu>						
+						</f:facet>
+					</p:cellEditor>
 				</p:column>
 				<p:column headerText="Cliente">
-					<h:outputText value="#{order.usuarioCustomer.nombre}"/>&nbsp;<h:outputText value="#{order.usuarioCustomer.apellidoMaterno}"/>
+					<h:outputText value="#{order.usuarioCustomer.nombre}"/>&nbsp;<h:outputText value="#{order.usuarioCustomer.apellidoPaterno}"/>
 				</p:column>
 				<p:column headerText="Estado">
-					<h:outputText value="#{order.orderState.description}"/>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{order.orderState.description}"/>
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu id="idStatusChange" value="#{consultaOrderView.idStatusChange}" >
+						       	<f:selectItems value="#{consultaOrderView.lstStatus.entrySet()}" var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
+							</p:selectOneMenu>						
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Actualizar">
+					<p:rowEditor />
 				</p:column>
 			</p:dataTable>
 			<hr/>	
