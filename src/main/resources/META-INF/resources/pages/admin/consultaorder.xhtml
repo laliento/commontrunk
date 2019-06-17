@@ -21,21 +21,26 @@ xmlns="http://www.w3.org/1999/xhtml"
 			<div class="EmptyBox10"/>
 			<div class="ContainerIndent">
 				<div class="Container100">
-					<h:panelGrid columns="4" cellpadding="5" cellspacing="5" columnClasses="col-label, col-input, col-wid100">
-						<h:outputText value="Estatus:" styleClass="output-label"/>
-						<p:selectOneMenu id="product" value="#{consultaOrderView.idStatus}" >
-					    	<f:selectItem itemLabel="Selecciona" itemValue="" />
-					       	<f:selectItems value="#{consultaOrderView.lstStatus.entrySet()}" var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
-						</p:selectOneMenu>
-					</h:panelGrid>
+					<div class="ui-g">
+						<div class="ui-g-1">
+							<h:outputText value="Estatus:" styleClass="output-label"/>
+						</div>
+					    <div class="ui-g-1">
+							<p:selectOneMenu id="product" value="#{consultaOrderView.idStatus}" >
+						    	<f:selectItem itemLabel="Selecciona" itemValue="" />
+						       	<f:selectItems value="#{consultaOrderView.lstStatus.entrySet()}" var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
+							</p:selectOneMenu>
+					    </div>
+						<div class="ui-g-2">
+							<p:commandButton value="Buscar" action="#{consultaOrderView.findOrderByStatus}" update="resulTable" >
+								<em class="fa fa-search"/>
+							</p:commandButton>
+						</div>
+					</div>
 				</div>
-				
 			</div>
 			<br/>
 			
-			<p:commandButton value="Buscar" action="#{consultaOrderView.findOrderByStatus}" update="resulTable" >
-				<em class="fa fa-search"/>
-			</p:commandButton>
 			<hr/>	
 				<div class="ContainerIndent">
 					<p:dataTable id="resulTable" var="order" value="#{consultaOrderView.lstOrderEncs}" emptyMessage="Sin registros"
@@ -62,17 +67,16 @@ xmlns="http://www.w3.org/1999/xhtml"
 						</p:column>
 					</p:dataTable>
 					
-					<!-- <p:blockUI block="resulTable" trigger="resulTable">
-				        Cargando<br />
-				    </p:blockUI>
-				     -->
 				</div>
 		</p:panel>
 	</h:form>
 	
 	 <p:dialog id="dlgDetail" header="Detalle" widgetVar="showDetail" resizable="true"
 				    	showEffect="clip" hideEffect="fold" modal="false" width="960" height="600">
-		<h:form id="frmDetail">			
+		<h:form id="frmDetail">		
+		 <p:messages id="messages" showDetail="true" closable="true">
+	        <p:autoUpdate />
+	    </p:messages>	
 			<p:dataTable id="resulTable" var="order" value="#{consultaOrderView.selectedOrder}" emptyMessage="Sin registros"
 								editable="true" resizableColumns="true" >
 				<p:ajax event="rowEdit" listener="#{consultaOrderView.onRowEdit}" update=":frmConsulta:resulTable"/>
@@ -85,7 +89,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 				<p:column headerText="Repartidor">
 					<p:cellEditor>
 						<f:facet name="output">
-							<h:outputText value="#{order.usuarioDelivery.nombre}"/>
+							<h:outputText value="#{order.usuarioDelivery.nombre}"/>&nbsp;<h:outputText value="#{order.usuarioDelivery.apellidoPaterno}"/>
 						</f:facet>
 						<f:facet name="input">
 							<p:selectOneMenu id="idRepartidor" value="#{consultaOrderView.idUsuarioRepartidor}" >

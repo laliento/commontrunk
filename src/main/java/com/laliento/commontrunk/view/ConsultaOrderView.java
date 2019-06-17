@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.laliento.commontrunk.entity.OrderDet;
 import com.laliento.commontrunk.entity.OrderEnc;
 import com.laliento.commontrunk.entity.OrderState;
-import com.laliento.commontrunk.entity.Product;
 import com.laliento.commontrunk.entity.Usuario;
 import com.laliento.commontrunk.service.OrderDetService;
 import com.laliento.commontrunk.service.OrderEncService;
@@ -32,7 +31,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @author Eduardo Cruz Zamorano
+ * @author Miguel
  *
  */
 @lombok.Getter
@@ -44,7 +43,7 @@ public class ConsultaOrderView extends BackingBean implements ViewMethodDefault{
 	OrderDetService orderDetService;
 	
 	@Autowired
-	OrderEncService OrderEncService;
+	OrderEncService orderEncService;
 	
 	@Autowired
 	UsuarioService usuarioService;
@@ -116,11 +115,13 @@ public class ConsultaOrderView extends BackingBean implements ViewMethodDefault{
 	public void onRowEdit(RowEditEvent event) {
 		if(idStatusChange!=null || idUsuarioRepartidor!=null) {
 			OrderEnc orderEnc = (OrderEnc) event.getObject();
+			if(!orderEnc.getOrderState().getIdOrderState().equals(idStatusChange))
+				lstOrderEncs.remove(orderEnc);
 			orderEnc.setOrderState(new OrderState(idStatusChange));
 				if(idUsuarioRepartidor!=null)
 					orderEnc.setUsuarioDelivery(new Usuario(idUsuarioRepartidor));
-			selectedOrder = OrderEncService.updateStatus(orderEnc);
-			lstOrderEncs.remove(orderEnc);
+			selectedOrder = orderEncService.updateStatus(orderEnc);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Actualizado!"));
 		}
 	}
 		

@@ -3,6 +3,7 @@
  */
 package com.laliento.commontrunk.view;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -13,11 +14,13 @@ import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.laliento.commontrunk.entity.OrderEnc;
+import com.laliento.commontrunk.entity.OrderState;
 import com.laliento.commontrunk.entity.Product;
 import com.laliento.commontrunk.entity.Usuario;
 import com.laliento.commontrunk.service.OrderDetService;
 import com.laliento.commontrunk.service.OrderEncService;
 import com.laliento.commontrunk.service.ProductService;
+import com.laliento.commontrunk.util.Constants;
 import com.laliento.commontrunk.view.config.BackingBean;
 import com.laliento.commontrunk.view.config.UserType;
 import com.laliento.commontrunk.view.config.ViewMethodDefault;
@@ -48,6 +51,8 @@ public class OrderView extends BackingBean implements ViewMethodDefault{
 	private TreeMap<String,Integer> orderShow;
 	private List<Product> lstProductsAll;
 	private TreeMap<Integer,String> lstProductsprice;
+	private List<OrderEnc> lstOrderEncsDelivery;
+	private List<Integer> lstStatus;
 	@Getter @Setter
 	private Integer item;
 	@Getter @Setter
@@ -68,7 +73,12 @@ public class OrderView extends BackingBean implements ViewMethodDefault{
 		for (Product product : lstProductsAll) {
 			lstProductsprice.put(product.getIdProduct(), product.getGenericDescription()+"  $"+product.getPrice());
 		}
-		
+		Usuario usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
+		lstStatus = new ArrayList<>();
+		lstStatus.add(Constants.ON_WAY.getInteger());
+		lstStatus.add(Constants.DELIVERED.getInteger());
+		lstOrderEncsDelivery = orderEncService.findOrderByUsuarioDelivery(usuario, lstStatus);
+		System.out.println("WWWw");
 	}
 	
 	public void addItem() {

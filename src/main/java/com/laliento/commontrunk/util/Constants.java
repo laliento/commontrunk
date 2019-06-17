@@ -6,7 +6,7 @@ package com.laliento.commontrunk.util;
 public enum Constants {
 	ADMIN_URL("/pages/admin/admin.xhtml"),
 	USER_URL("/pages/user/user.xhtml"),
-	DELIVERY_URL("/pages/delivery/delivery.xhtml"),
+	DELIVERY_URL("/pages/delivery/welcomedelivery.xhtml"),
 	LALO_URL("/pages/lalo/lalo.xhtml"),
 	NAME_SYSTEM("SoftMvi"),
 	SESSION_USER_kEY("SessionUser"),

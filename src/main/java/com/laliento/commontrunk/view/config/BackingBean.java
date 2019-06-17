@@ -31,6 +31,7 @@ public class BackingBean implements Serializable{
 	protected static final Logger LOG = LogManager.getLogger();
 	private Authentication auth;
 	private boolean flagErrorMsg;
+	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	protected  final String createPage(UserType userType) {
