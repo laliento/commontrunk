@@ -89,6 +89,8 @@ public class ConsultaOrderView extends BackingBean implements ViewMethodDefault{
 		for (Usuario usuario: lst) {
 			lstRepartidores.put(usuario.getIdUsuario(),usuario.getNombre()+" "+usuario.getApellidoPaterno());
 		}
+		idStatus = 1;
+		findOrderByStatus();
 	}
 	
 	public void findOrderById() {
