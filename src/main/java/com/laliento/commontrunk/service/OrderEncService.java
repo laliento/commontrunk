@@ -48,18 +48,20 @@ public class OrderEncService implements OrderEncServiceInterface {
 	@Override
 	public List<OrderEnc> findOrderByUsuarioDelivery(Usuario usuario, List<Integer> lstStatus) {
 		Integer idUsuario = usuario.getIdUsuario();
-		List<Object> lst = orderEncRepository.findOrdersByUser(idUsuario,lstStatus);
+		List<Object[]> lst = orderEncRepository.findOrdersByUser(idUsuario,lstStatus);
+		List<OrderEnc> lstReturn = null;
 		if(lst!=null & lst.size()>0) {
-			
-//			List<OrderEnc> lstOrders = new ArrayList<>();
-			for (Object object : lst) {
+			lstReturn = new ArrayList<>();
+			for (int i=0; i<lst.size(); i++){
+				String id = lst.get(i)[0].toString();
+				String idStatus = lst.get(i)[1].toString();
 				OrderEnc orderEnc = new OrderEnc();
-				
+				orderEnc.setIdEncOrderEnc(Integer.valueOf(id));
+				orderEnc.setOrderState(new OrderState(Integer.valueOf(idStatus)));
+			   lstReturn.add(orderEnc);
 			}
 		}
-			
-		System.out.println("dwdw"+lst);
-		return null;
+		return lstReturn;
 	}
 
 }

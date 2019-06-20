@@ -55,6 +55,18 @@ xmlns="http://www.w3.org/1999/xhtml"
   	<p:outputPanel style="padding-left:2%">
         <h3>Status de tus Ordenes</h3>
     </p:outputPanel>
+    <p:dataTable var="orderStatus" value="#{orderView.lstOrderEncsDelivery}" id="ordenStatus" 
+			resizableColumns="true" style="width:25%;margin:auto"
+			 emptyMessage="Sin Ordenes en Proceso" >
+	    <p:column headerText="Id Orden">
+	        <h:outputText value="#{orderStatus.idEncOrderEnc}" />
+	    </p:column>
+	    <p:column headerText="Status">
+			<h:outputText rendered="#{orderStatus.orderState.idOrderState == 3}" value="En camino" />
+			<h:outputText rendered="#{orderStatus.orderState.idOrderState == 4}" value="Entregado" />
+	    </p:column>
+	</p:dataTable>
+    <br />
 	<h:form>
 	
 	</h:form>	

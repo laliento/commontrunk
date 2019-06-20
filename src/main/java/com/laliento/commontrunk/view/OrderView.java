@@ -14,7 +14,6 @@ import javax.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.laliento.commontrunk.entity.OrderEnc;
-import com.laliento.commontrunk.entity.OrderState;
 import com.laliento.commontrunk.entity.Product;
 import com.laliento.commontrunk.entity.Usuario;
 import com.laliento.commontrunk.service.OrderDetService;
@@ -78,7 +77,6 @@ public class OrderView extends BackingBean implements ViewMethodDefault{
 		lstStatus.add(Constants.ON_WAY.getInteger());
 		lstStatus.add(Constants.DELIVERED.getInteger());
 		lstOrderEncsDelivery = orderEncService.findOrderByUsuarioDelivery(usuario, lstStatus);
-		System.out.println("WWWw");
 	}
 	
 	public void addItem() {
