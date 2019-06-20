@@ -84,7 +84,7 @@ public class ConsultaOrderView extends BackingBean implements ViewMethodDefault{
 		lstStatus.put(Constants.ON_WAY.getInteger(), "En camino");
 		lstStatus.put(Constants.DELIVERED.getInteger(), "Entregado");
 		
-		List<Usuario>lst = usuarioService.findAllByPerfil(1);
+		List<Usuario>lst = usuarioService.findAllByPerfil(Constants.DELIVERY_USER.getInteger());
 		lstRepartidores = new TreeMap<>();
 		for (Usuario usuario: lst) {
 			lstRepartidores.put(usuario.getIdUsuario(),usuario.getNombre()+" "+usuario.getApellidoPaterno());

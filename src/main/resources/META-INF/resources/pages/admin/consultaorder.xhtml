@@ -31,6 +31,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 						       	<f:selectItems value="#{consultaOrderView.lstStatus.entrySet()}" var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
 							</p:selectOneMenu>
 					    </div>
+					    
 						<div class="ui-g-2">
 							<p:commandButton value="Buscar" action="#{consultaOrderView.findOrderByStatus}" update="resulTable" >
 								<em class="fa fa-search"/>
@@ -72,7 +73,7 @@ xmlns="http://www.w3.org/1999/xhtml"
 	</h:form>
 	
 	 <p:dialog id="dlgDetail" header="Detalle" widgetVar="showDetail" resizable="true"
-				    	showEffect="clip" hideEffect="fold" modal="false" width="960" height="600">
+				    	showEffect="clip" hideEffect="fold" modal="false" width="960" height="400">
 		<h:form id="frmDetail">		
 		 <p:messages id="messages" showDetail="true" closable="true">
 	        <p:autoUpdate />

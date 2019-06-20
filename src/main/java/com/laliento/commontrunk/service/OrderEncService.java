@@ -13,6 +13,7 @@ import com.laliento.commontrunk.entity.OrderEnc;
 import com.laliento.commontrunk.entity.OrderState;
 import com.laliento.commontrunk.entity.Usuario;
 import com.laliento.commontrunk.repository.OrderEncRepository;
+import com.laliento.commontrunk.repository.UsuarioRepository;
 import com.laliento.commontrunk.util.Constants;
 
 /**
@@ -25,15 +26,22 @@ public class OrderEncService implements OrderEncServiceInterface {
 	
 	@Autowired
 	OrderEncRepository orderEncRepository;
+	
+	@Autowired
+	UsuarioRepository usuarioRepository;
 
 	@Override
 	public OrderEnc saveOrUpdate(OrderEnc orderEnc) {
-		orderEnc.setUsuarioAdmin(new Usuario(Constants.ADMIN_USER.getInteger()));
-		orderEnc.setUsuarioDelivery(new Usuario(Constants.DELIVERY_USER.getInteger()));
-		orderEnc.setOrderState(new OrderState(Constants.PENDING_ORDER.getInteger()));
-		orderEnc.setLastUpdate(new Date());
-		orderEnc.setCreationDate(new Date());
-		return orderEncRepository.save(orderEnc);
+		Integer idUser = usuarioRepository.findFirstAdmin(Constants.ADMIN_USER.getInteger());
+		if(idUser!=null) {
+			orderEnc.setUsuarioAdmin(new Usuario(idUser));
+			orderEnc.setUsuarioDelivery(new Usuario(idUser));
+			orderEnc.setOrderState(new OrderState(Constants.PENDING_ORDER.getInteger()));
+			orderEnc.setLastUpdate(new Date());
+			orderEnc.setCreationDate(new Date());
+			return orderEncRepository.save(orderEnc);
+		}else
+			return null;
 	}
 
 	public OrderEnc updateStatus(OrderEnc orderEnc) {

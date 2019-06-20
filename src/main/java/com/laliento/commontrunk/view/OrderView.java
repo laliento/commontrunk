@@ -3,8 +3,10 @@
  */
 package com.laliento.commontrunk.view;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import javax.faces.application.FacesMessage;
@@ -56,6 +58,8 @@ public class OrderView extends BackingBean implements ViewMethodDefault{
 	private Integer item;
 	@Getter @Setter
 	private Integer cantidad;
+	@Getter @Setter
+	private BigDecimal total;
 	
 	@Override
 	public String goPage() {
@@ -66,7 +70,8 @@ public class OrderView extends BackingBean implements ViewMethodDefault{
 	}
 
 	@Override
-	public void loadElements() {
+	public void loadElements() { 
+		total = BigDecimal.ZERO;
 		lstProductsAll = productService.findAll();
 		lstProductsprice = new TreeMap<>();
 		for (Product product : lstProductsAll) {
@@ -80,6 +85,7 @@ public class OrderView extends BackingBean implements ViewMethodDefault{
 	}
 	
 	public void addItem() {
+		BigDecimal tmpTotal = BigDecimal.ZERO;
 		if(order==null) { 
 			order = new TreeMap<Integer, Integer>();
 			orderShow = new TreeMap<String, Integer>();
@@ -94,10 +100,23 @@ public class OrderView extends BackingBean implements ViewMethodDefault{
 			orderShow.put(lstProductsprice.get(item), cantidad);
 		}
 		item=null;
-		cantidad=null;
+ 		cantidad=null;
+ 		total=null;
+ 		for (Entry<Integer, Integer> entry : order.entrySet()) {
+ 		    Integer id = entry.getKey();
+ 		    Integer cantidad = entry.getValue();
+ 		    BigDecimal precio = lstProductsAll.get(id-1).getPrice();
+ 		    tmpTotal = precio.multiply(BigDecimal.valueOf(cantidad));
+ 		    if(total!=null)
+ 		    	total = total.add(tmpTotal);
+ 		    else 
+ 		    	total = tmpTotal;
+ 		}
+ 		tmpTotal=null;
 	}
 	
 	public void removeItem() {
+		BigDecimal tmpTotal = BigDecimal.ZERO;
 		if(order!=null) {
 			if (order.containsKey(item)) {
 				Integer resta = order.get(item);
@@ -114,6 +133,17 @@ public class OrderView extends BackingBean implements ViewMethodDefault{
 			}
 			item=null;
 			cantidad=null;
+			total=null;
+			for (Entry<Integer, Integer> entry : order.entrySet()) {
+	 		    Integer id = entry.getKey();
+	 		    Integer cantidad = entry.getValue();
+	 		    BigDecimal precio = lstProductsAll.get(id-1).getPrice();
+	 		    tmpTotal = precio.multiply(BigDecimal.valueOf(cantidad));
+	 		    if(total!=null)
+	 		    	total = total.add(tmpTotal);
+	 		    else 
+	 		    	total = tmpTotal;
+	 		}
 		}
 	}
 	
@@ -132,6 +162,7 @@ public class OrderView extends BackingBean implements ViewMethodDefault{
 				}
 				if(records!=null && records>0)
 					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se ha guardado tu orden con: ", records+" productos!"));
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Id de Orden: "+orderEnc.getIdEncOrderEnc()));
 			} catch (Exception e) {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error!","Error al guardar tu orden!"));
 				e.printStackTrace();
