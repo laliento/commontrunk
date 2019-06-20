@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/general/template.xhtml"
+xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+>
+
+<ui:define name="content">
+<div class="ContainerIndent">
+	<h:form id="frmConsulta">
+		<p:panel>
+			<div class="Container100">
+				<div class="ContainerIndent">
+					<h2>Consulta Orden</h2>
+				</div>
+			</div>
+			<p:separator></p:separator>
+			<div class="EmptyBox10"/>
+			<div class="ContainerIndent">
+				<div class="Container100">
+					<div class="ui-g">
+						<div class="ui-g-1">
+							<h:outputText value="Estatus:" styleClass="output-label"/>
+						</div>
+					    <div class="ui-g-1">
+							<p:selectOneMenu id="product" value="#{consultaOrderView.idStatus}" >
+						    	<f:selectItem itemLabel="Selecciona" itemValue="" />
+						       	<f:selectItems value="#{consultaOrderView.lstStatus.entrySet()}" var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
+							</p:selectOneMenu>
+					    </div>
+						<div class="ui-g-2">
+							<p:commandButton value="Buscar" action="#{consultaOrderView.findOrderByStatus}" update="resulTable" >
+								<em class="fa fa-search"/>
+							</p:commandButton>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br/>
+			
+			<hr/>	
+				<div class="ContainerIndent">
+					<p:dataTable id="resulTable" var="order" value="#{consultaOrderView.lstOrderEncs}" emptyMessage="Sin registros"
+							paginator="true" rows="10"  resizableColumns="true" >
+						<p:column headerText="Id Orden" width="10%" style="text-align:center">
+							<p:commandButton value="#{order.idEncOrderEnc}" styleClass="hardblue" 
+								action="#{consultaOrderView.viewDetail}"
+								update="dlgDetail"
+								oncomplete="PF('showDetail').show()">
+								<f:setPropertyActionListener value="#{order}" target="#{consultaOrderView.selectedOrder}"/>
+							</p:commandButton>
+						</p:column>
+						<p:column headerText="Administrador">
+							<h:outputText value="#{order.usuarioAdmin.nombre}"/>&nbsp;<h:outputText value="#{order.usuarioAdmin.apellidoPaterno}"/>
+						</p:column>
+						<p:column headerText="Repartidor">
+							<h:outputText value="#{order.usuarioDelivery.nombre}"/>&nbsp;<h:outputText value="#{order.usuarioDelivery.apellidoPaterno}"/>
+						</p:column>
+						<p:column headerText="Cliente">
+							<h:outputText value="#{order.usuarioCustomer.nombre}"/>&nbsp;<h:outputText value="#{order.usuarioCustomer.apellidoPaterno}"/>
+						</p:column>
+						<p:column headerText="Estado">
+							<h:outputText value="#{order.orderState.description}"/>
+						</p:column>
+					</p:dataTable>
+					
+				</div>
+		</p:panel>
+	</h:form>
+	
+	 <p:dialog id="dlgDetail" header="Detalle" widgetVar="showDetail" resizable="true"
+				    	showEffect="clip" hideEffect="fold" modal="false" width="960" height="600">
+		<h:form id="frmDetail">		
+		 <p:messages id="messages" showDetail="true" closable="true">
+	        <p:autoUpdate />
+	    </p:messages>	
+			<p:dataTable id="resulTable" var="order" value="#{consultaOrderView.selectedOrder}" emptyMessage="Sin registros"
+								editable="true" resizableColumns="true" >
+				<p:ajax event="rowEdit" listener="#{consultaOrderView.onRowEdit}" update=":frmConsulta:resulTable"/>
+				<p:column headerText="Id Orden" width="10%">
+					<h:outputText value="#{order.idEncOrderEnc}" styleClass="hardblue"/>
+				</p:column>
+				<p:column headerText="Administrador">
+					<h:outputText value="#{order.usuarioAdmin.nombre}"/>&nbsp;<h:outputText value="#{order.usuarioAdmin.apellidoPaterno}"/>
+				</p:column>
+				<p:column headerText="Repartidor">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{order.usuarioDelivery.nombre}"/>&nbsp;<h:outputText value="#{order.usuarioDelivery.apellidoPaterno}"/>
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu id="idRepartidor" value="#{consultaOrderView.idUsuarioRepartidor}" >
+						       	<f:selectItems value="#{consultaOrderView.lstRepartidores.entrySet()}" var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
+							</p:selectOneMenu>						
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Cliente">
+					<h:outputText value="#{order.usuarioCustomer.nombre}"/>&nbsp;<h:outputText value="#{order.usuarioCustomer.apellidoPaterno}"/>
+				</p:column>
+				<p:column headerText="Estado">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{order.orderState.description}"/>
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu id="idStatusChange" value="#{consultaOrderView.idStatusChange}" >
+						       	<f:selectItems value="#{consultaOrderView.lstStatus.entrySet()}" var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
+							</p:selectOneMenu>						
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Actualizar">
+					<p:rowEditor />
+				</p:column>
+			</p:dataTable>
+			<hr/>	
+	    	<p:dataTable id="resulTableDetail" var="detail" value="#{consultaOrderView.lstOrderDets}" emptyMessage=""
+				 resizableColumns="true" >
+				<p:column headerText="Producto">
+					<h:outputText value="#{detail.product.genericDescription}"/>
+				</p:column>
+				<p:column headerText="Precio">
+					<h:outputText value="#{detail.product.price}"/>
+				</p:column>
+				<p:column headerText="Cantidad">
+					<h:outputText value="#{detail.quantity}"/>
+				</p:column>
+			</p:dataTable>
+			<br />
+			<h:outputLabel value="Total: $" style="font-weight:bold" /><h:outputLabel value="#{consultaOrderView.total}" style="font-weight:bold" />
+    	</h:form>
+    	 <p:hotkey bind="esc" handler="PF('showDetail').hide()" />
+    </p:dialog>
+	 	
+	    
+</div>
+</ui:define>
+    
+</ui:composition>

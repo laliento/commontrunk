@@ -7,6 +7,7 @@ package com.laliento.commontrunk.view.config;
 public enum UserType {
 	ADMIN("admin"),
 	USER("user"),
+	DELIVERY("delivery"),
 	LALO("lalo");
 	UserType(String userType) {
 		this.userType = userType;

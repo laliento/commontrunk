@@ -45,4 +45,11 @@ public class Product {
 	private String subBrand;
 	@Column(name="MODEL_STYLE_TYPE",length=200)
 	private String modelStyleType;
+	
+	public Product(Integer idProduct) {
+		super();
+		this.idProduct = idProduct;
+	}
+	
+	
 }
