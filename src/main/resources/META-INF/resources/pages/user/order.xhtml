@@ -28,8 +28,8 @@ xmlns="http://www.w3.org/1999/xhtml"
 			</p:selectOneMenu>
 			<h:outputLabel value="Cantidad:" style="font-weight:bold" />
 	        <p:inputText id="cantidad" value="#{orderView.cantidad}" size="5"/>
-	        <p:commandButton value="Agregar" action="#{orderView.addItem}" update="orden orderPanel" icon="pi pi-check" />
-	        <p:commandButton value="Quitar" action="#{orderView.removeItem}" update="orden orderPanel" icon="pi pi-check" /> 
+	        <p:commandButton value="Agregar" action="#{orderView.addItem}" update="orden orderPanel total" icon="pi pi-check" />
+	        <p:commandButton value="Quitar" action="#{orderView.removeItem}" update="orden orderPanel total" icon="pi pi-check" /> 
 		</h:panelGrid>
 	<p:dataTable var="order" value="#{orderView.orderShow}" id="orden" 
 			resizableColumns="true" style="width:25%;margin:auto"
@@ -41,8 +41,9 @@ xmlns="http://www.w3.org/1999/xhtml"
 	    <p:column headerText="Cantidad">
 	        <h:outputText value="#{order.value}" />
 	    </p:column>
-	 	 
 	</p:dataTable>
+	<br />
+	<h:outputLabel value="Total: $" style="font-weight:bold;margin:auto"/><h:outputLabel id="total" value="#{orderView.total}" style="font-weight:bold" />
 	<br />
 	<h:panelGrid style="margin:auto">
 		<p:commandButton value="Guardar" action="#{orderView.saveOrder}" update="orden orderPanel" >
